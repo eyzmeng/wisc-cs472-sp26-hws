@@ -208,11 +208,17 @@ EOM
     ], [ $body ] ];
 }
 
+# I don't want to import File::Spec :P
+my $base_dir;
+BEGIN {
+    my $base_url = URI::file->new(dirname($FindBin::RealBin));
+    $base_dir = URI->new("$base_url/public/html")->dir;
+    defined $base_dir or die "BUG: URI round-trip failed?!!";
+}
+
 sub main ($env) {
     my $path = $env->{"PATH_INFO"};
     my ($isdir, $cleanpath) = normpath($path);
-
-    my $base_dir = dirname($FindBin::RealBin);
 
     my ($fh, $type);
     if ($isdir) {
