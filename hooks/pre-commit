@@ -20,7 +20,7 @@ fi
 # If there are whitespace errors, print the offending file names and fail.
 git diff-index --check --cached $BASE --
 
-vnu_warn=
+vnu_warn=0
 vnu_path=
 
 vnu ()
@@ -28,10 +28,10 @@ vnu ()
 	if [ "$vnu_warn" -eq 1 ]; then
 		return
 	fi
-	if
-		vnu_path="$(command -v validatenu)" ||
+	if ! {
+		vnu_path="$(command -v validatornu)" ||
 		vnu_path="$(command -v vnu)"
-	then
+	} then
 		echo >&2 "**** You don't have Nu Html Checker. Skipping HTML check."
 		vnu_warn=1
 		return
@@ -40,7 +40,7 @@ vnu ()
 	"$vnu_path" "$@"
 }
 
-git diff-index --cached --name-only --diff-filter=A $BASE |
+git diff-index --cached --name-only --diff-filter=AM $BASE |
 grep ^public/html/ | grep \\\.html\$ |
 while read -r file; do
 	if vnu "$file"; then
@@ -50,4 +50,5 @@ while read -r file; do
 		echo >&2 "**** Nu check \"$file\" failed [code $code]"
 		exit $code
 	fi
+	[ "$vnu_warn" -ne 1 ] || break
 done
