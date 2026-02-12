@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# This is based on the Git's pre-commit.sample.
+#
+
+# Redirect output to stderr.
+exec 1>&2
+
+# Fatalize commands.
+set -e
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+	BASE=HEAD
+else
+	# Initial commit: diff against an empty tree object
+	BASE=$(git hash-object -t tree /dev/null)
+fi
+
+# If there are whitespace errors, print the offending file names and fail.
+git diff-index --check --cached $BASE --
+
+vnu_warn=
+vnu_path=
+
+vnu ()
+{
+	if [ "$vnu_warn" -eq 1 ]; then
+		return
+	fi
+	if
+		vnu_path="$(command -v validatenu)" ||
+		vnu_path="$(command -v vnu)"
+	then
+		echo >&2 "**** You don't have Nu Html Checker. Skipping HTML check."
+		vnu_warn=1
+		return
+	fi
+
+	"$vnu_path" "$@"
+}
+
+git diff-index --cached --name-only --diff-filter=A $BASE |
+grep ^public/html/ | grep \\\.html\$ |
+while read -r file; do
+	if vnu "$file"; then
+		:
+	else
+		code=$?
+		echo >&2 "**** Nu check \"$file\" failed [code $code]"
+		exit $code
+	fi
+done
