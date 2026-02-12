@@ -289,7 +289,8 @@ sub file_response ($env, $fh)
 
     if (exists $env->{"HTTP_IF_MODIFIED_SINCE"}) {
         my $since = $env->{"HTTP_IF_MODIFIED_SINCE"};
-        if ($time <= $since) {
+        my $since_tm = str2time($since);
+        if (defined $since_tm && $time <= $since_tm) {
             return [ HTTP_NOT_MODIFIED, [], [] ];
         }
     }
