@@ -467,9 +467,51 @@ sub copy_file ($into, $from, $start, $length)
     }
 }
 
+sub NoNo_NastyPath ($app)
+{
+    sub ($env) {
+        my $path = $env->{"PATH_INFO"};
+        if ($path =~ m@
+        (
+        ^$
+        | ^ (.*/)? [.]env.* $
+        | ^ (.*/)? [^/]+ [-./] config $
+        | ^ (.*/)? config ([-./] production)? [.] (json | php | xml | yaml | yml) $
+        | ^ (.*/)? docker (-compose) [.] (yaml | yml)
+        | ^ /wp
+        (?:
+          | -1 # someone somehow thought /wp-1/ exists
+          | -admin | -aespa | -apxupx | -cli | -close | -config | -db | -dsa | -fox
+          | -elp | -error | -find | -mar | -max | -mna | -mce-help | -page-update
+          | -pdmx | -plugging | -readlink | -search | -ss | -thesex | -ver | -xxx
+        ) (| [.]php | /.*) $
+        | ^ .* [.] (db | sql | sqlite) $
+        | ^ (.*/)? [.] (aws | config | kube | git | ssh | svn | vscode ) (/.*)? $
+        | ^ /etc/shadow $
+        | ^ /etc/ssl (| /.*) $
+        | ^ (.*/)? (_vti_cnf | _vti_pvt | _vti_script | _vti_txt) (/.*)? $
+        | ^ (.*/)? ([.]DS_Store | Thumbs.db | [.]_.+ ) $
+        )
+        @snix) {
+            goto ABYSS;
+        }
+
+        if ($path =~ m@^(.*/)? (s?bin|bin|scripts?|utils?) (/.*)?@snix) {
+            goto ABYSS;
+        }
+
+        return $app->($env);
+
+ABYSS:
+        warn " >>> !!! NoNo BANNED @{[quote($path)]} !!! <<<\n";
+        return [ HTTP_NOT_FOUND, [], [] ];
+    };
+}
+
 use Plack::Builder;
 my $app = builder {
     enable "Head";
+    enable \&NoNo_NastyPath;
     \&main;
 };
 
