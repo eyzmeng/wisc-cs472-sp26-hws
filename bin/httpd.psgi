@@ -226,7 +226,6 @@ sub main ($env) {
         {
             my $cleanpath = "${cleanpath}index.html";
             my $file = file_path($base_dir, $cleanpath);
-            print "try ", quote($file), "\n";
             unless (defined $file) {
                 warn "URI not translatable to $^O: ",
                     quote($cleanpath);
