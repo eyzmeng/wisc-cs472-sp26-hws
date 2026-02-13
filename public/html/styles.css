@@ -54,6 +54,10 @@ body, pre, code {
     margin: 1em;
 }
 
+p,  {
+    line-height: 1.2;
+}
+
 .navbar {
 
     .crumb a:visited {
@@ -73,38 +77,50 @@ main {
     width: 76ch;
 }
 
-pre.epigram {
+.epigram pre {
     background-color: #333;
-    padding: 1.2em 2.5em;
+    /* I actually want to make it so that the padding
+     * doesn't turn this pre-chunk into horizontal
+     * scroll thingy, but that means doing something
+     * with responsive, which means (somehow) figuring
+     * out the Bootstrap thresholds for lg/md/sm ...
+     * and I'm no Ethan Marcotte. so uhh..... :x */
+    padding: 1.2em 1.5em;
     /* Counter-act _reboot.scss */
-    line-height: 1.2;
-    /*font-size: 1rem; --> Actually this is fine */
+    font-size: 0.6rem; /* smaller! */
+    /* A square-ish font is better for ASCII art
+     * (speaking of "art", i didn't really make this
+     * one... i just asciiart.eu/text-to-ascii-art
+     * generate it for me... lol (plz don't sue me)) */
+    font-family:
+        "PxPlus IBM VGA 9x8", "Px437 IBM VGA 9x8",
+        "Fixedsys", "Courier New", "Courier", monospace;
 }
 
 figure {
     /* Counter-act _reboot.scss again */
     margin: 2em 0;
-}
 
-figure > img {
-    display: block;
-    width: 12rem;
-    height: auto;
-    /* Without height:auto, the following would be
-     * necessary (though that fits, not shrinks) */
-    /* object-fit: contain; */
-    margin: 1em auto;
-}
+    img {
+        display: block;
+        width: 12rem;
+        height: auto;
+        /* Without height:auto, the following would be
+         * necessary (though that fits, not shrinks) */
+        /* object-fit: contain; */
+        margin: 1em auto;
+    }
 
-figure > figcaption {
-    text-align: center;
-    width: 40ch;
-    /* Okay, I may be a hypocrite -- BUT... */
-    /* (actually I'm fine; i was looking at margin
-     * collapse, but now i realize they don't look
-     * so good so close together now that the navbar
-     * is moved to the top. */
-    margin: 1em auto;
+    figcaption {
+        text-align: center;
+        width: 40ch;
+        /* Okay, I may be a hypocrite -- BUT... */
+        /* (actually I'm fine; i was looking at margin
+         * collapse, but now i realize they don't look
+         * so good so close together now that the navbar
+         * is moved to the top. */
+        margin: 1em auto;
+    }
 }
 
 .rule {
