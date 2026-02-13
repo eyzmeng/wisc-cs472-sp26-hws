@@ -1,4 +1,5 @@
 /*# vi: set ai et sts=4 sw=4: #####################**
+ +/&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\+
  *|                                                |*
  *|  ============================================= |*
  *|   ____  _       _            ____  _ _         |*
@@ -9,7 +10,7 @@
  *|                      |___/                     |*
  *|  ==================         ================== |*
  *|                                                |*
- *#################################################**/
+ *\################################################/*/
 
 @charset UTF-8;
 
@@ -17,9 +18,15 @@
     color-scheme: light dark;
 }
 
+body {
+    font-family: /* https://int10h.org/oldschool-pc-fonts/ */
+        "PxPlus IBM VGA 9x16", "Px437 IBM VGA 9x16",
+        "Fixedsys", "Courier New", "Courier", monospace;
+}
+
 @media (prefers-color-scheme: dark) {
     html, body {
-        background-color: #000;
+        background-color: #222;
         color: #bbb;
     }
 }
