@@ -18,6 +18,12 @@
     color-scheme: light dark;
 }
 
+* {
+    box-sizing: border-box;
+    /* This may be a little perverse... */
+    max-width: 100%;
+}
+
 /* Color scheme */
 @media (prefers-color-scheme: dark) {
     html, body {
@@ -82,7 +88,7 @@ figure {
 
 figure > img {
     display: block;
-    width: 40%;
+    width: 12rem;
     height: auto;
     /* Without height:auto, the following would be
      * necessary (though that fits, not shrinks) */
