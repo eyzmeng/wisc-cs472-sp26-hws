@@ -133,6 +133,7 @@ figure {
          * anyway uh WE NEED HEIGHT AUTO VERY BADLY!!! */
         /* object-fit: contain; */
         margin: 1em auto;
+        image-rendering: pixelated;
     }
 
     img.dinky {
